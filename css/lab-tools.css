@@ -1,0 +1,108 @@
+/* Toolbar injected by js/lab-tools.js for each lab problem.
+   Colours are declared for both themes; the book ships cosmo/darkly and
+   Quarto puts .quarto-dark on the body when the dark theme is active. */
+
+.lab-tools-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 0.25rem 0 0.75rem;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  background-color: #f8f9fa;
+  color: #212529;
+  font-size: 0.85rem;
+}
+
+.lab-timer-clock {
+  font-family: var(--bs-font-monospace, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 1.05rem;
+  font-weight: 700;
+  min-width: 4.2em;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.lab-tools-btn {
+  border: 1px solid #adb5bd;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  padding: 0.1rem 0.55rem;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  cursor: pointer;
+  margin-bottom: 0 !important;
+}
+
+.lab-tools-btn:hover { background-color: rgba(0, 0, 0, 0.06); }
+
+.lab-tools-hint {
+  margin-left: auto;
+  opacity: 0.65;
+  font-style: italic;
+}
+
+.lab-tools-bar.running .lab-timer-clock { color: #0a7d55; }
+.lab-tools-bar.nearly-done .lab-timer-clock { color: #b8860b; }
+.lab-tools-bar.expired { border-color: #dc3545; }
+.lab-tools-bar.expired .lab-timer-clock { color: #dc3545; }
+
+/* Focus mode. Fullscreen API when the browser allows it; this overlay is the
+   fallback and also styles the fullscreen element itself. */
+.lab-focused {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  margin: 0;
+  padding: 2.5rem clamp(1rem, 8vw, 10rem);
+  overflow-y: auto;
+  background-color: #ffffff;
+  color: #212529;
+}
+
+body.lab-focus-active { overflow: hidden; }
+
+.lab-focused:fullscreen {
+  padding: 2.5rem clamp(1rem, 8vw, 10rem);
+  background-color: #ffffff;
+}
+
+/* Dark theme */
+.quarto-dark .lab-tools-bar,
+[data-bs-theme="dark"] .lab-tools-bar {
+  border-color: #444;
+  background-color: #2b2b2b;
+  color: #dee2e6;
+}
+
+.quarto-dark .lab-tools-btn,
+[data-bs-theme="dark"] .lab-tools-btn { border-color: #6c757d; }
+
+.quarto-dark .lab-tools-btn:hover,
+[data-bs-theme="dark"] .lab-tools-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.quarto-dark .lab-tools-bar.running .lab-timer-clock,
+[data-bs-theme="dark"] .lab-tools-bar.running .lab-timer-clock { color: #00bc8c; }
+
+.quarto-dark .lab-tools-bar.nearly-done .lab-timer-clock,
+[data-bs-theme="dark"] .lab-tools-bar.nearly-done .lab-timer-clock { color: #f39c12; }
+
+.quarto-dark .lab-tools-bar.expired .lab-timer-clock,
+[data-bs-theme="dark"] .lab-tools-bar.expired .lab-timer-clock { color: #e74c3c; }
+
+.quarto-dark .lab-focused,
+.quarto-dark .lab-focused:fullscreen,
+[data-bs-theme="dark"] .lab-focused,
+[data-bs-theme="dark"] .lab-focused:fullscreen {
+  background-color: #222222;
+  color: #dee2e6;
+}
+
+@media print {
+  .lab-tools-bar { display: none; }
+}
