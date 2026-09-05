@@ -1,0 +1,189 @@
+/* Shared editing on one cell. See js/pair-live.js. */
+
+/* The house style for a button added to a cell's header. It used to live in
+   lab-tools.css as .cell-copy-btn, back when copying was the only thing a
+   button in a header did. */
+.pair-live-btn {
+  padding: 0.05rem 0.5rem;
+  font-size: 0.74rem;
+  line-height: 1.6;
+  border: 1px solid var(--ed-rule, #ccc);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--ed-muted, #666);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.pair-live-btn:hover,
+.pair-live-btn:focus-visible {
+  color: var(--ed-accent, #333);
+  border-color: var(--ed-accent, #333);
+}
+
+/* One floated group, not three floated buttons. Floats do not wrap against
+   each other -- they overlap -- and this header already carries Run Code,
+   Start Over and Copy before we add anything. */
+/* ---- the per-cell control ------------------------------------------------
+   Restored: renaming the sidebar control to pair-live-panel left these with
+   nothing, because both had been sharing one class name. */
+.pair-live-bar {
+  float: right;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;                /* lets the name below actually shrink */
+  max-width: 100%;
+  margin-left: 0.5rem;
+}
+
+.pair-live-bar.pair-live-on .pair-live-status { display: block; }
+
+.pair-live-bar.pair-live-on .pair-live-pen { display: inline-block; }
+
+.pair-live-bar.pair-live-on .pair-live-status::before {
+  content: "● ";
+  color: var(--ed-accent, #7b2d26);
+}
+
+.pair-live-bar .pair-live-btn { float: none; margin-left: 0; }
+
+@media (max-width: 575.98px) {
+  .pair-live-bar { float: none; width: 100%; margin-left: 0; margin-top: 0.35rem; }
+  .pair-live-status { max-width: none; }
+}
+
+@media print {
+  .pair-live-bar { display: none !important; }
+}
+
+/* In the sidebar it is a row of the page, not an overlay: no position, no
+   z-index, nothing to sit on top of the text. */
+/* display:flex would otherwise win over the hidden attribute. */
+.pair-live-panel[hidden] { display: none !important; }
+
+.pair-live-panel {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.75rem 0;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--ed-rule, #d8d4cd);
+  border-radius: 4px;
+  background: var(--bs-body-bg, #fff);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ed-muted, #6b6660);
+  opacity: 0.75;
+  transition: opacity .15s ease;
+  flex-wrap: wrap;
+}
+
+
+.pair-live-panel:hover,
+.pair-live-panel:focus-within { opacity: 1; }
+
+/* In session it stops being furniture: leaving a room open after class is the
+   mistake this is here to prevent. */
+.pair-live-panel.pair-live-panel-on {
+  opacity: 0.85;
+  border-color: var(--ed-accent, #7b2d26);
+  color: var(--ed-accent, #7b2d26);
+}
+
+.pair-live-panel.pair-live-panel-on .pair-live-panel-state::before { content: "\25cf\00a0"; }
+
+/* Name and group are fields, not settings behind a dialog, so they look like
+   fields: small, quiet, and obviously editable. */
+.pair-live-panel-name,
+.pair-live-panel-group {
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  background: transparent;
+  border: 1px solid var(--ed-rule, #d8d4cd);
+  border-radius: 3px;
+  padding: 0.12rem 0.3rem;
+  min-width: 0;
+}
+
+.pair-live-panel-name {
+  text-transform: none;
+  letter-spacing: normal;
+  flex: 1 1 5.5rem;
+  width: 100%;
+}
+
+.pair-live-panel-name::placeholder {
+  color: var(--ed-muted, #6b6660);
+  opacity: 0.6;
+  text-transform: none;
+}
+
+.pair-live-panel-group { flex: 0 0 auto; cursor: pointer; }
+
+.pair-live-panel-pass {
+  font: inherit;
+  letter-spacing: 0.2em;
+  color: inherit;
+  background: transparent;
+  border: 1px solid var(--ed-accent, #7b2d26);
+  border-radius: 3px;
+  padding: 0.12rem 0.3rem;
+  flex: 1 1 6rem;
+  min-width: 0;
+  width: 100%;
+}
+.pair-live-panel-pass::placeholder { letter-spacing: normal; text-transform: none; opacity: 0.6; }
+.pair-live-panel-pass[hidden] { display: none !important; }
+
+.pair-live-panel-name:focus,
+.pair-live-panel-group:focus { outline: none; border-color: currentColor; }
+
+.pair-live-panel.pair-live-panel-on .pair-live-panel-name,
+.pair-live-panel.pair-live-panel-on .pair-live-panel-group { border-color: currentColor; }
+
+.pair-live-panel .pair-live-btn { float: none; margin-left: 0; }
+
+/* The second destination sits beside the first and reads as the lesser of the
+   two: sharing with your group is the common act, showing the class is not. */
+.pair-live-go-class { opacity: 0.75; }
+.pair-live-go-class:hover { opacity: 1; }
+
+@media print { .pair-live-panel { display: none !important; } }
+
+/* ---- one right-aligned run of controls -----------------------------------
+   The header grew piecemeal: a label, the extension's own button group, Run
+   Code, and then ours floated in beside them, so the row read as two clusters
+   with a gap. One flex row instead, with the label taking the slack, puts
+   every button in a single right-aligned run in the order they are used --
+   start over, show solution, share, run.
+
+   Floats are ignored on a flex item, so the per-cell bar's float:right becomes
+   a no-op here rather than something to undo. */
+.exercise-editor-header,
+.exercise-editor .card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.exercise-editor-header > .btn-label-exercise-editor,
+.exercise-editor .card-header > .btn-label-exercise-editor {
+  margin-right: auto;
+}
+
+/* Ours is a flex item now, not a float, and should not add a second margin. */
+.exercise-editor-header .pair-live-bar,
+.exercise-editor .card-header .pair-live-bar {
+  float: none;
+  margin-left: 0;
+}
+
+/* Narrow: let the run wrap under the label rather than overflow the card. */
+@media (max-width: 575.98px) {
+  .exercise-editor-header,
+  .exercise-editor .card-header { row-gap: 0.35rem; }
+}

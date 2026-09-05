@@ -1,0 +1,103 @@
+/* Wide mode: the sidebar's width, handed to the editors. See js/wide-mode.js. */
+
+/* The in-sidebar control borrows Quarto's own navigation-tool styling, so it
+   reads as part of the chrome rather than as something bolted on. */
+.wide-mode-tool {
+  border: none;
+  background: none;
+  padding: 0 0.25rem;
+  color: inherit;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.wide-mode-tool:hover { color: var(--ed-accent, #375a7f); }
+
+/* The only floating control, and it exists only while the sidebar is gone.
+   Top corner rather than mid-edge: in wide mode the content is centred, so
+   nothing of the page reaches this far up and out. */
+.wide-mode-restore {
+  position: fixed;
+  left: 0;
+  top: 0.6rem;
+  z-index: 1050;
+  display: none;
+  padding: 0.3rem 0.45rem;
+  border: 1px solid var(--ed-rule, #d8d4cd);
+  border-left: none;
+  border-radius: 0 3px 3px 0;
+  background: var(--bs-body-bg, #fff);
+  color: var(--ed-muted, #6b6660);
+  font-size: 0.8rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.4;
+  transition: opacity .15s ease, color .15s ease;
+}
+
+.wide-mode-restore:hover,
+.wide-mode-restore:focus-visible {
+  opacity: 1;
+  color: var(--ed-accent, #375a7f);
+}
+
+html.wide-mode .wide-mode-restore { display: block; }
+
+/* On a phone the sidebar already collapses on its own and this is moot. */
+@media (max-width: 991.98px) {
+  .wide-mode-tool,
+  html.wide-mode .wide-mode-restore { display: none; }
+}
+
+/* ---- The mode itself ---------------------------------------------------- */
+
+html.wide-mode #quarto-sidebar,
+html.wide-mode #quarto-margin-sidebar,
+html.wide-mode #quarto-sidebar-glass {
+  display: none !important;
+}
+
+html.wide-mode { --wide-measure: 1020px; }
+
+html.wide-mode #quarto-content { max-width: none; }
+
+/* Hiding the sidebar does not reclaim its space: it is a grid item in a named
+   column, and the column outlives it. Rather than rewrite the template --
+   there is a different one per body class and per breakpoint, so overriding
+   them is a game of whack-a-mole -- let the content span the whole grid and
+   centre itself inside it. That holds whatever the template underneath is.
+ *
+ * Every child of the grid, not just <main>. The page navigation is a sibling
+ * of the content, and Quarto appends the giscus loader straight onto
+ * #quarto-content, so the comment box lands as a sibling too. Centring only
+ * <main> left both of them sitting in the old off-centre column. Written as
+ * "everything except the sidebars" so that whatever Quarto appends next is
+ * centred as well. */
+html.wide-mode #quarto-content > *:not(#quarto-sidebar):not(#quarto-margin-sidebar):not(#quarto-sidebar-glass) {
+  grid-column: screen-start / screen-end !important;
+  max-width: min(var(--wide-measure), calc(100% - 3em));
+  margin-inline: auto;
+}
+
+/* Deliberately NOT justify-self: center. That sizes a grid item to fit its
+   content, and the giscus comment box is an iframe whose width is 100% of a
+   parent that would then have no definite width -- the percentage falls back
+   to the iframe's 300px default and the comments collapse to a sliver. The
+   default stretch plus a max-width and auto margins centres the item without
+   ever making its width depend on what is inside it. */
+
+/* One width for everything on the page.
+ *
+ * The first version of this held the prose at its 700px measure and let only
+ * the cells take the new room. That was wrong in practice: the text sat hard
+ * left in a column half again as wide, which reads as a page that failed to
+ * centre rather than as a deliberate measure, and it put a visible step
+ * between every paragraph and the editor under it. A ragged left edge costs
+ * more here than the long line does. */
+html.wide-mode main#quarto-document-content :is(.cell, .cell *, .callout-title *) {
+  max-width: 100%;
+}
+
+@media print {
+  .wide-mode-tool, .wide-mode-restore { display: none !important; }
+}
