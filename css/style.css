@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,wght@0,200..900;1,200..900&display=swap');
+html, body {
+    font-size: 18px;
+    line-height: 1.6;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Bree Serif', Rockwell, Georgia, serif;
+    /* Bree Serif ships a single face at weight 400, so a bold heading gets a
+       browser-synthesized faux-bold. It is a slab and reads as emphatic at
+       400 on its own. */
+    font-weight: 400;
+}
+p, div {
+    /* The fallback has to be a serif: if the webfont fails to load, a
+       sans-serif fallback silently turns the whole book into a sans one. */
+    font-family: 'Source Serif 4', Charter, Georgia, serif !important;
+}
+.sidebar-title {
+    text-align: center;
+}    
+.exercise, .solution {
+    font-size: 1.1em;
+    font-weight: normal;
+    margin-bottom: 5px;
+}
+
+.exercise .theorem-title {
+    font-weight: 600; 
+}
+.sidebar-logo {
+    display: block!important;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+}
+
+.solution {
+    padding: 5px;
+    border-radius: 5px;
+
+    background-color: #eee;
+    color: #212529;
+}
+
+/* Dark mode. The light background above is hard-coded, so without this the
+   darkly theme's white body text landed on a near-white box and solutions
+   were unreadable. Quarto puts .quarto-dark on the body; the attribute
+   selector covers Bootstrap 5.3 themes that set data-bs-theme instead. */
+.quarto-dark .solution,
+[data-bs-theme="dark"] .solution {
+    background-color: #303030;
+    color: #dee2e6;
+}
+
+/* Same problem, same fix, for the exercise and hint boxes the Quarto Live
+   extension emits. It sets a border but leaves the fill to the page. */
+.quarto-dark .webr-ojs-exercise.exercise-solution,
+.quarto-dark .webr-ojs-exercise.exercise-hint,
+[data-bs-theme="dark"] .webr-ojs-exercise.exercise-solution,
+[data-bs-theme="dark"] .webr-ojs-exercise.exercise-hint {
+    background-color: #2b2b2b;
+    color: #dee2e6;
+}
+button {
+    margin-bottom: 5px!important;
+}
+.katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.quote {
+    text-align: right;
+    font-style: italic;
+    padding: 20px;
+}
+
+.quote ::first-letter {
+    font-size: x-large;
+}
+.cell-output-container {
+    overflow-x: auto;
+}
+/* Concept tags on interview questions, matching DATS 6101. A row of small pills
+   naming what a question tests, each linking to the chapter that covers it. */
+.tags { margin: -0.4rem 0 1.1rem 0; font-size: 0.82em; line-height: 2.1; }
+.tags a {
+    background-color: #eef2f6; color: #2c4257; border: 1px solid #d7dee6;
+    border-radius: 999px; padding: 0.12em 0.62em; margin-right: 0.3em;
+    text-decoration: none; white-space: nowrap;
+}
+.tags a:hover { background-color: #e0e7ee; text-decoration: none; }
+.quarto-dark .tags a, [data-bs-theme="dark"] .tags a {
+    background-color: #333a41; color: #cbd6e2; border-color: #454d56;
+}
+.tags .diff {
+    border-radius: 999px; padding: 0.12em 0.62em; margin-right: 0.45em;
+    font-weight: 600; letter-spacing: 0.02em; white-space: nowrap;
+}
+.tags .d1 { background-color: #e3f1e6; color: #24603a; border: 1px solid #c6e0cd; }
+.tags .d2 { background-color: #e5edf7; color: #1f4a75; border: 1px solid #c8dbee; }
+.tags .d3 { background-color: #f7e9e3; color: #7a3b1e; border: 1px solid #eed3c6; }
+.quarto-dark .tags .d1, [data-bs-theme="dark"] .tags .d1 { background-color: #24382b; color: #a9d6b8; border-color: #33503d; }
+.quarto-dark .tags .d2, [data-bs-theme="dark"] .tags .d2 { background-color: #23334a; color: #a8c6e6; border-color: #33475f; }
+.quarto-dark .tags .d3, [data-bs-theme="dark"] .tags .d3 { background-color: #3d2c22; color: #e0b49a; border-color: #543d30; }
